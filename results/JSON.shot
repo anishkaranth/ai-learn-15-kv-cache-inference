@@ -1,0 +1,52 @@
+{
+  "project": "ai-learn-15-kv-cache-inference",
+  "seed": 42,
+  "config": {
+    "vocab_size": 128,
+    "d_model": 64,
+    "n_heads": 4,
+    "n_layers": 4,
+    "d_ff": 256,
+    "max_len": 1024
+  },
+  "prompt_len": 8,
+  "lengths": [
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "summary": {
+    "all_identical": true,
+    "worst_max_abs_diff": 7.62939453125e-06,
+    "speedup_at_max_len": 27.8035,
+    "max_len": 256,
+    "work_ratio_at_max_len": 127.89,
+    "median_step_ms_no_cache_last16": 8.096,
+    "median_step_ms_cache_last16": 0.447
+  },
+  "speedup_by_len": {
+    "16": 2.30766,
+    "32": 3.94633,
+    "64": 6.94071,
+    "128": 12.72177,
+    "256": 27.8035
+  },
+  "max_abs_diff_by_len": {
+    "16": 4.76837158203125e-06,
+    "32": 5.7220458984375e-06,
+    "64": 5.7220458984375e-06,
+    "128": 5.7220458984375e-06,
+    "256": 7.62939453125e-06
+  },
+  "kv_bytes_by_len": {
+    "64": 131072,
+    "128": 262144,
+    "256": 524288,
+    "512": 1048576,
+    "1024": 2097152
+  },
+  "runtime_s": 4.463,
+  "pass": true
+}

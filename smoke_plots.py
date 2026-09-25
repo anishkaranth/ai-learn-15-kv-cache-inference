@@ -50,8 +50,8 @@ def make_plots(out: Path, m: Dict[str, Any]) -> List[str]:
 
     st = m["per_step"]
     fig, ax = plt.subplots(figsize=(7, 3.6))
-    ax.plot(st["positions"], [t * 1e3 for t in st["no_cache_ms"]], color="#e76f51", label="no cache (re-run prefix)")
-    ax.plot(st["positions"], [t * 1e3 for t in st["cache_ms"]], color="#2a9d8f", label="KV cache (1 token)")
+    ax.plot(st["positions"], st["no_cache_ms"], color="#e76f51", label="no cache (re-run prefix)")
+    ax.plot(st["positions"], st["cache_ms"], color="#2a9d8f", label="KV cache (1 token)")
     ax.set_xlabel("decode position"); ax.set_ylabel("step latency (ms)")
     ax.set_title(f"Per-step latency (length {st['positions'][-1] + 1})"); ax.legend()
     names.append(_save(fig, out / "per_step_latency.svg"))

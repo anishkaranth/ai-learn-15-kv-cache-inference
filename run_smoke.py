@@ -36,7 +36,7 @@ def per_step_latency(prompt, total, params, cfg):
         a = time.perf_counter(); forward_full(toks[: t + 1], params, cfg); b = time.perf_counter()
         forward_cached([toks[t]], params, cfg, cache); c = time.perf_counter()
         pos.append(t); nc.append(b - a); kc.append(c - b)
-    return {"positions": pos, "no_cache_ms": [round(x, 6) for x in nc], "cache_ms": [round(x, 6) for x in kc]}
+    return {"positions": pos, "no_cache_ms": [round(x * 1e3, 3) for x in nc], "cache_ms": [round(x * 1e3, 3) for x in kc]}
 
 
 def main() -> None:
@@ -60,6 +60,7 @@ def main() -> None:
     for r in bench:
         for k in ("time_no_cache_s", "time_cache_s", "speedup"):
             r[k] = round(r[k], 5)
+        r["generated"] = r["generated"][:16]  # first 16 generated tokens (identical for both paths)
     m = {
         "project": "ai-learn-15-kv-cache-inference", "seed": SEED, "prompt_len": PROMPT_LEN, "prompt": prompt,
         "config": cfg.__dict__, "model": {"n_params": np_, "param_bytes": np_ * 4, "dtype": "float32"},
@@ -68,8 +69,8 @@ def main() -> None:
                     "worst_max_abs_diff": max(r["max_abs_logit_diff"] for r in bench),
                     "speedup_at_max_len": bench[-1]["speedup"], "max_len": bench[-1]["total_len"],
                     "work_ratio_at_max_len": round(bench[-1]["tokens_processed_no_cache"] / bench[-1]["tokens_processed_cache"], 2),
-                    "median_step_ms_no_cache_last16": round(float(np.median(steps["no_cache_ms"][-16:])) * 1e3, 4),
-                    "median_step_ms_cache_last16": round(float(np.median(steps["cache_ms"][-16:])) * 1e3, 4)},
+                    "median_step_ms_no_cache_last16": round(float(np.median(steps["no_cache_ms"][-16:])), 3),
+                    "median_step_ms_cache_last16": round(float(np.median(steps["cache_ms"][-16:])), 3)},
         "runtime_s": round(runtime, 3),
     }
     RESULTS.mkdir(exist_ok=True)

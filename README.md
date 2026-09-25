@@ -54,7 +54,7 @@ python run_smoke.py
 ## Headline results (from `results/metrics.json`)
 
 - Greedy tokens are **identical** with and without the cache at every length (16 to 256). The worst max abs logit diff is **7.6e-06**, which is float32 rounding.
-- Speedup grows with length: **2.5x at 16 tokens, 12.5x at 128 and 29.1x at 256**. At 256 tokens the no-cache path feeds 32,612 tokens through the model and the cached path feeds 255.
+- Speedup grows with length: **2.3x at 16 tokens, 12.7x at 128 and 27.8x at 256**. At 256 tokens the no-cache path feeds 32,612 tokens through the model and the cached path feeds 255.
 - The KV cache costs **2,048 bytes per token** for this model (4 layers x 4 heads x 16 d_head x K,V x float32). The measured size matches the formula exactly. At 1,024 tokens the cache is 1.87x the size of the model weights.
 
 Timings are wall-clock on a shared CPU and vary by run. The token/diff/memory numbers are deterministic.
